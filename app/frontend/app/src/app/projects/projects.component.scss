@@ -1,0 +1,36 @@
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    .controls {
+        margin-top: -.5rem;
+    }
+}
+
+.projects-container {
+    padding-top: 1rem;
+    mat-card-content {
+        
+        p {
+            margin-top: 16px;
+        }
+    }
+
+    mat-tab-group {
+        
+        .tab-content {
+            margin-top: 16px;
+            margin-bottom: 16px;
+            min-height: 300px;
+            // mat-spinner::w
+            mat-spinner {
+                position: absolute;
+                top: 30%;
+                left: 45%;
+            }
+            .row {
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    }
+}

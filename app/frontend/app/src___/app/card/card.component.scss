@@ -1,0 +1,17 @@
+.card {
+    padding: .5rem 1rem;
+    border: 1px solid #eee;
+    margin-bottom: .5rem;
+    .text {
+        font-style: 1.5rem;
+        &.red {
+            color: red;
+        }
+        &.green{
+            color:green;
+        }
+        &.blue {
+            color: blue;
+        }
+    }
+}

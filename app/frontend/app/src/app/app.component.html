@@ -1,0 +1,69 @@
+<mat-toolbar>
+  <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+      <mat-icon *ngIf="!sidenav.opened">
+          menu
+      </mat-icon>
+      <mat-icon *ngIf="sidenav.opened">
+          close
+      </mat-icon>
+  </button>
+  <span>{{ title }}</span>
+  <span class="toolbar-spacer"></span>
+  <button mat-icon-button class="favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button mat-icon-button class="" aria-label="Example icon-button with share icon">
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-progress-bar *ngIf="routerLoading" class="progress-bar" [value]="progressBarValue" mode="determinate"></mat-progress-bar>
+
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav opened mode="side" class="">
+    
+    <div class="sidebar-left-content">
+      <div class="sidebar-controls">
+
+        <ng-template ngFor let-item [ngForOf]="menu">
+          <ng-container *ngIf="item.name; else navDivider">
+            <a class="menu-button" 
+                mat-button
+                routerLink="{{ item.routeLink }}" 
+                href="{{ item.hrefLink }}" 
+                routerLinkActive="active"
+                (click)="handleSidenavClick()"
+                [disabled]="item.disabled ? true: null"
+                [color]="item.color ? item.color : null"
+              >
+              <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+              {{ item.name }}
+            </a>
+          </ng-container>
+          <ng-template #navDivider>
+            <mat-divider></mat-divider>
+          </ng-template>
+        </ng-template>
+
+      </div>
+
+      <div class="about-me">
+        <mat-divider></mat-divider>
+        <!-- <img class="avatar" src="/assets/images/developer.png" /> -->
+
+        <h4 class="name">Александр</h4>
+        <p class="designation">Software Engineer</p>
+      </div>
+    </div>
+  </mat-sidenav>
+  <!-- <mat-sidenav opened position="end" mode="side">End</mat-sidenav> -->
+  <mat-sidenav-content>
+  <app-breadcrumbs></app-breadcrumbs>
+    <div class="content">
+      <!-- <mat-spinner *ngIf="routerLoading"></mat-spinner> -->
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<p-toast>...</p-toast>

@@ -1,0 +1,17 @@
+// @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+// @use '@angular/material';
+@import 'bootstrap/dist/css/bootstrap-grid.min.css';
+@import '~primeicons/primeicons.css';
+@import '~primeng/resources/themes/saga-green/theme.css';
+@import '~primeng/resources/primeng.min.css';
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: #f5f5f5;
+}
