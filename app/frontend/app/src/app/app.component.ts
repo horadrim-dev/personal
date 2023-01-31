@@ -6,6 +6,8 @@ import {
 } from '@angular/cdk/layout';
 import { MessageService } from 'primeng/api';
 import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { AuthService } from './shared/services/auth.service';
+import { User } from './shared/models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -17,13 +19,27 @@ export class AppComponent {
   title = 'My app';
   routerLoading = false;  // включает анимацию загрузки (progressBar)
   progressBarValue = 85;
+  currentUser: User|null = null;
+  menu = [
+    { 'name': 'Главная', 'routeLink': '', 'hrefLink': '/', 'icon': 'home', 'disabled': false, 'color':'primary' },
+    { 'name': 'Блог', 'routeLink': 'blog', 'hrefLink': '/blog', 'icon': 'feed', 'disabled': true },
+    { 'name': 'Проекты', 'routeLink': 'projects', 'hrefLink': '/projects', 'icon': 'dynamic_feed', 'disabled': false, 'color':'primary' },
+    { 'name': 'Обо мне', 'routeLink': 'about', 'hrefLink': '/about', 'icon': 'person', 'disabled': false, 'color':'primary' },
+    {}, // divider
+    { 'name': 'Вопрос/Ответ', 'routeLink': 'faq', 'hrefLink': '/faq', 'icon': 'help', 'disabled': false },
+    // {}, // divider
+  ]
 
   constructor(
     private observer: BreakpointObserver,
     private cdr: ChangeDetectorRef,  // нужно для фикса ошибки ExpressionChangedAfterItHasBeenCheckedError
     private router: Router,
-    // private messageService: MessageService
+    private _authService : AuthService,
+    private messageService: MessageService
   ) { 
+    // подписка на текущего авторизованного пользовател
+    this._authService.currentUser.subscribe(x => this.currentUser = x)
+
     //  Подписка на события роутера
     //  Анимация при загрузке разделов
     this.router.events.subscribe((event: Event) => {
@@ -32,7 +48,6 @@ export class AppComponent {
           this.routerLoading = true;
           break;
         }
-
         case event instanceof NavigationEnd:
         case event instanceof NavigationCancel:
         case event instanceof NavigationError: {
@@ -46,19 +61,14 @@ export class AppComponent {
       }
     });
 
-
     // this.messageService.add({severity:'success', summary:'Service Message', detail:'Via MessageService'});
   }
 
-  menu = [
-    { 'name': 'Главная', 'routeLink': '', 'hrefLink': '/', 'icon': 'home', 'disabled': false, 'color':'primary' },
-    { 'name': 'Блог', 'routeLink': 'blog', 'hrefLink': '/blog', 'icon': 'feed', 'disabled': true },
-    { 'name': 'Проекты', 'routeLink': 'projects', 'hrefLink': '/projects', 'icon': 'dynamic_feed', 'disabled': false, 'color':'primary' },
-    { 'name': 'Обо мне', 'routeLink': 'about', 'hrefLink': '/about', 'icon': 'person', 'disabled': false, 'color':'primary' },
-    {}, // divider
-    { 'name': 'Вопрос/Ответ', 'routeLink': 'faq', 'hrefLink': '/faq', 'icon': 'help', 'disabled': false },
-    // {}, // divider
-  ]
+  logout(){
+    this._authService.logout();
+    this.router.navigate(['/login']);
+  }
+
 
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
@@ -68,7 +78,6 @@ export class AppComponent {
       this.sidenav.toggle();
     }
   }
-
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
       if (res.matches) {

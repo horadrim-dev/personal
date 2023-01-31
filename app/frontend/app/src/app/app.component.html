@@ -16,6 +16,7 @@
     <mat-icon>share</mat-icon>
   </button>
   <button 
+    *ngIf="!currentUser"
     mat-icon-button 
     aria-label="Log In" 
     matTooltip="Вход" 
@@ -24,6 +25,21 @@
     >
     <mat-icon>login</mat-icon>
   </button>
+  <button mat-stroked-button *ngIf="currentUser" [matMenuTriggerFor]="userMenu" class="icon-right">
+    <mat-icon>more_verts</mat-icon>
+    <span>Алекс</span>
+  </button>
+  <mat-menu #userMenu>
+    <button mat-menu-item>
+      <mat-icon>person</mat-icon>
+      <span>Профиль</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>logout</mat-icon>
+      <span>Выйти</span>
+    </button>
+  </mat-menu>
+
 </mat-toolbar>
 <mat-progress-bar *ngIf="routerLoading" class="progress-bar" [value]="progressBarValue" mode="determinate"></mat-progress-bar>
 

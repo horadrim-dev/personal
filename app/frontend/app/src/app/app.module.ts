@@ -23,6 +23,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ProfileComponent } from './profile/profile.component';
     MatListModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatMenuModule,
     ToastModule,
     // MessagesModule,
     MatTooltipModule,

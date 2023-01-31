@@ -50,6 +50,7 @@ export class AuthService {
 
         console.log('this.currentUserValue.refreshToken')
         console.log(this.currentUserValue.refreshToken)
+
         const refreshToken = this.currentUserValue.refreshToken
         return this.api.post<any>(`${this.env.jwtRefresh}`, { 'refresh': refreshToken })
             .pipe(
