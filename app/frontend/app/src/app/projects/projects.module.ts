@@ -12,12 +12,12 @@ import { ProjectService } from './models/project/project.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIcon, MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { CreateComponent } from './create/create.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatDividerModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule,
     MatCardModule,
     MatTabsModule,
     MatProgressSpinnerModule,
@@ -38,6 +37,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTooltipModule,
 
 
   ],

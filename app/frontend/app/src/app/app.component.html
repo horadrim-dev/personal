@@ -15,6 +15,15 @@
   <button mat-icon-button class="" aria-label="Example icon-button with share icon">
     <mat-icon>share</mat-icon>
   </button>
+  <button 
+    mat-icon-button 
+    aria-label="Log In" 
+    matTooltip="Вход" 
+    routerLink="login" 
+    routerLinkActive="active"
+    >
+    <mat-icon>login</mat-icon>
+  </button>
 </mat-toolbar>
 <mat-progress-bar *ngIf="routerLoading" class="progress-bar" [value]="progressBarValue" mode="determinate"></mat-progress-bar>
 
@@ -59,11 +68,11 @@
   <!-- <mat-sidenav opened position="end" mode="side">End</mat-sidenav> -->
   <mat-sidenav-content>
   <app-breadcrumbs></app-breadcrumbs>
+  <!-- <p-messages ></p-messages> -->
+  <p-toast>...</p-toast>
     <div class="content">
       <!-- <mat-spinner *ngIf="routerLoading"></mat-spinner> -->
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
-
-<p-toast>...</p-toast>

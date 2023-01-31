@@ -46,6 +46,10 @@ export class ProjectsComponent implements OnInit {
           console.log('ERROR IN COMPONENT:', err);
           console.log(this.completedProjectsTabLoaded);
           this.completedProjectsErrors.push(err);
+          this.messageService.add({
+            severity: 'error', life: 10000, summary: "Сервер недоступен",
+            detail: "Не удалось загрузить список проектов."
+          })
         }
       });
   }
@@ -55,6 +59,7 @@ export class ProjectsComponent implements OnInit {
             severity: 'success',
             summary: 'Отлично!',
             detail: 'Все заебись, просто охуенчик',
+            life: 100000
         });
     }
 

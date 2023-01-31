@@ -6,5 +6,7 @@ import { environment } from 'src/environments/environment';
 })
 export class EnvironmentService {
   public urlAddress: string = environment.urlAddress;
+  public jwtLogin: string = environment.jwtLogin;
+  public jwtRefresh: string = environment.jwtRefresh;
   constructor() { }
 }

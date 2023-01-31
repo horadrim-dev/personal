@@ -21,7 +21,8 @@ export class AppComponent {
   constructor(
     private observer: BreakpointObserver,
     private cdr: ChangeDetectorRef,  // нужно для фикса ошибки ExpressionChangedAfterItHasBeenCheckedError
-    private router: Router
+    private router: Router,
+    // private messageService: MessageService
   ) { 
     //  Подписка на события роутера
     //  Анимация при загрузке разделов
@@ -45,6 +46,8 @@ export class AppComponent {
       }
     });
 
+
+    // this.messageService.add({severity:'success', summary:'Service Message', detail:'Via MessageService'});
   }
 
   menu = [

@@ -1,11 +1,22 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
 // import { BlogComponent } from './blog/blog.component';
 
 const routes: Routes = [
   // { path: "", redirectTo: 'blog', pathMatch: 'full'},
-  // { path: "", component: AppComponent },
+  { 
+    path: "login", 
+    component: LoginComponent,
+    data: { breadcrumb: 'Вход' }
+  },
+  { 
+    path: "profile", 
+    component: ProfileComponent,
+    data: { breadcrumb: 'Профиль' }
+  },
   {
     path: "blog",
     loadChildren: () => import('./blog/blog.module').then(m => m.BlogModule),

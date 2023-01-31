@@ -108,6 +108,9 @@ export class ApiService {
             errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
         }
         console.log(errorMessage);
+        /////////
+        // TODO: ошибка должна отсылаться разработчику
+        /////////
         return throwError(() => new Error(errorMessage));
     }
 }

@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 // import { BlogComponent } from './blog/blog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ToastModule } from 'primeng/toast';
+// import { MessagesModule } from 'primeng/messages' ;
 import { MatDividerModule } from '@angular/material/divider';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,13 +18,18 @@ import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 // import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ToastModule } from 'primeng/toast';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { LoginComponent } from './login/login.component';
+import { ProfileComponent } from './profile/profile.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     BreadcrumbsComponent,
+    LoginComponent,
+    ProfileComponent,
     // BlogComponent,
   ],
   imports: [
@@ -34,11 +41,13 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatDividerModule,
     MatButtonModule,
     MatSidenavModule,
+    MatListModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
     ToastModule,
+    // MessagesModule,
+    MatTooltipModule,
     LayoutModule,
-    MatListModule,
     HttpClientModule,
   ],
   bootstrap: [AppComponent]
