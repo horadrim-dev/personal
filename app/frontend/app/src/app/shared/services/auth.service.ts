@@ -36,7 +36,8 @@ export class AuthService {
                       currentUser.refreshToken = response.refresh
                       localStorage.setItem('currentUser', JSON.stringify(currentUser));
                       this.currentUserSubject.next(currentUser);
-                      return currentUser;
+                      console.log(JSON.stringify(currentUser));
+                      // return currentUser;
                     } 
                     return response
                 }),
@@ -67,7 +68,7 @@ export class AuthService {
                         localStorage.setItem('currentUser', JSON.stringify(currentUser));
                         console.log(currentUser)
                         this.currentUserSubject.next(currentUser);
-                      return currentUser;
+                      // return currentUser;
                     } 
                     return response
                 }),

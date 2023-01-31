@@ -17,7 +17,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
 import { HttpClientModule } from '@angular/common/http';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -51,6 +51,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatTooltipModule,
     LayoutModule,
     HttpClientModule,
+    ReactiveFormsModule,
   ],
   bootstrap: [AppComponent]
 })

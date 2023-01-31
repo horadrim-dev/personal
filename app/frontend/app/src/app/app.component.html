@@ -30,11 +30,11 @@
     <span>Алекс</span>
   </button>
   <mat-menu #userMenu>
-    <button mat-menu-item>
+    <button mat-menu-item routerLink="/profile" routerLinkActive="active">
       <mat-icon>person</mat-icon>
       <span>Профиль</span>
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item (click)="logout()">
       <mat-icon>logout</mat-icon>
       <span>Выйти</span>
     </button>
