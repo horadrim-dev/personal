@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { catchError, finalize } from 'rxjs';
+import { User } from '../shared/models/user.model';
 import { AuthService } from '../shared/services/auth.service';
 import { Project } from './models/project/project.model';
 import { ProjectService } from './models/project/project.service';
@@ -31,6 +32,7 @@ export class ProjectsComponent implements OnInit {
   activeProjectsTabLoaded = false;
 
   completedProjectsErrors : Error[] = [];
+  currentUser: User|null = null;
   isAdmin : Boolean = false;
 
   constructor(
@@ -38,8 +40,9 @@ export class ProjectsComponent implements OnInit {
     public project_model: ProjectService, 
     private messageService: MessageService,
   ){
-    if (_authService.currentUser != null) this.isAdmin = true;
-    console.log(this.isAdmin, _authService.currentUser)
+    this._authService.currentUser.subscribe(x => this.currentUser = x)
+    this._authService.isAdmin.subscribe(x => this.isAdmin = x)
+    // console.log('IS ADMIN? - ', this.isAdmin);
   }
 
   ngOnInit() {

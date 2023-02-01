@@ -13,10 +13,14 @@ export class AuthService {
   
     private currentUserSubject: BehaviorSubject<User | null>;
     public currentUser: Observable<User | null>;
+    public isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
 
-    constructor(private api: ApiService, private env:EnvironmentService) {
+    constructor(private api: ApiService, private env: EnvironmentService) {
         this.currentUserSubject = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('currentUser') as string));
         this.currentUser = this.currentUserSubject.asObservable();
+        
+        // TODO: переделать в случае добавления пользовательской авторизации
+        this.currentUserSubject.subscribe(x => this.isAdmin.next(x ? true : false))
     }
 
     public get currentUserValue(): User | null {
