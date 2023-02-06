@@ -22,9 +22,7 @@ export class ProjectService {
         // });
     }
     createProject(data: any) {
-        return this.api.post<Project>('projects', data).subscribe(response => {
-            console.log('POST RESPONSE: ', response);
-        });
+        return this.api.post<Project>('projects', data) 
         // this.projects.push(data);
     }
     getProjects() : Observable<Project[]> {

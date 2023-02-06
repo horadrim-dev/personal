@@ -58,6 +58,7 @@ export class ApiService {
     }
 
     get<T = void>(url: string, options?: Partial<ApiRequestOptions>): Observable<T> {
+        console.log('options: ', getApiRequestOptions(options))
         return this.httpClient.get<T>(
                 this.makeUrl(url), 
                 getApiRequestOptions(options)

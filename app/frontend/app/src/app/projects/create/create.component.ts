@@ -11,6 +11,7 @@ export class CreateComponent {
 
   projectForm: FormGroup;
   project_form_submitted = false;
+  errors : any = []
 
   constructor(
     public project_model: ProjectService,
@@ -27,7 +28,13 @@ export class CreateComponent {
     //     title: value.title,
     //     description: value.description
     // }
-    this.project_model.createProject(this.projectForm.value);
+    this.project_model.createProject(this.projectForm.value).subscribe({
+      next: response => {
+            console.log('POST RESPONSE: ', response);
+        },
+      error: err => this.errors.push(err)
+    })
+
     this.project_form_submitted = true;
   }
 

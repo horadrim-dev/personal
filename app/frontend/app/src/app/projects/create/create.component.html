@@ -40,9 +40,12 @@
             </form>
         </div>
 
-        <div *ngIf="project_form_submitted ">
+        <div *ngIf="project_form_submitted && !errors">
             <h4>Project was submitted successfully!</h4>
             <button class="btn btn-success" (click)="newProject()">Add</button>
+        </div>
+        <div *ngIf="errors">
+            <span>{{ errors }}</span>
         </div>
     </div>
 </div>

@@ -11,24 +11,31 @@ import { EnvironmentService } from './environment.service';
 })
 export class AuthService {
   
-    private currentUserSubject: BehaviorSubject<User | null>;
-    public currentUser: Observable<User | null>;
+    private currentUserSubject: BehaviorSubject<User|null>;
+    public currentUser: Observable<User|null>;
+    // public isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
     public isAdmin: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
 
-    constructor(private api: ApiService, private env: EnvironmentService) {
-        this.currentUserSubject = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('currentUser') as string));
+    constructor(private _api: ApiService, private _env: EnvironmentService) {
+        let storedUser = localStorage.getItem('currentUser')
+        this.currentUserSubject = new BehaviorSubject<User|null>(storedUser? JSON.parse(storedUser) : null)
         this.currentUser = this.currentUserSubject.asObservable();
         
         // TODO: переделать в случае добавления пользовательской авторизации
+        // this.currentUserSubject.subscribe(x => this.isLoggedIn.next(x ? true : false))
         this.currentUserSubject.subscribe(x => this.isAdmin.next(x ? true : false))
     }
 
-    public get currentUserValue(): User | null {
+    public get isLoggedIn(): boolean{
+        return this.currentUserValue? true : false
+    }
+
+    public get currentUserValue(): User|null {
         return this.currentUserSubject.value;
     }
 
     login(username: string, password: string) {
-        return this.api.post<any>(`${this.env.jwtLogin}`, { username, password })
+        return this._api.post<any>(`${this._env.jwtLogin}`, { username, password })
             .pipe(
                 map(response => {
                     // login successful if there's a jwt token in the response
@@ -51,17 +58,17 @@ export class AuthService {
 
     refreshToken() {
         // if user is empty - exiting
-        if (!this.currentUserValue) return null
+        // if (!this.currentUserValue) return null
 
-        console.log('this.currentUserValue.refreshToken')
-        console.log(this.currentUserValue.refreshToken)
+        // console.log('this.currentUserValue.refreshToken')
+        // console.log(this.currentUserValue!.refreshToken)
 
-        const refreshToken = this.currentUserValue.refreshToken
-        return this.api.post<any>(`${this.env.jwtRefresh}`, { 'refresh': refreshToken })
+        const refreshToken = this.currentUserValue!.refreshToken
+        return this._api.post<any>(`${this._env.jwtRefresh}`, { 'refresh': refreshToken })
             .pipe(
                 map(response => {
                     // login successful if there's a jwt token in the response
-                    console.log('refresh')
+                    // console.log('refresh')
                     console.log(response)
                     let currentUser: User;
                     if (response.access) {
