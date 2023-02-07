@@ -2,6 +2,7 @@ import { Project } from "./project.model";
 import { Injectable } from "@angular/core";
 import { ApiService } from "src/app/shared/services/api.service";
 import { Observable } from "rxjs";
+import { EnvironmentService } from "src/app/shared/services/environment.service";
 
 @Injectable()
 export class ProjectService {
@@ -12,7 +13,7 @@ export class ProjectService {
     constructor(
         // private datasource: ProjectsService
         // private repo: ProjectRepository
-        private api: ApiService,
+        private _api: ApiService, private _env: EnvironmentService
     ){
         // this.datasource = new ProjectsService;
         // this.projects = new Array<Project>();
@@ -22,14 +23,23 @@ export class ProjectService {
         // });
     }
     createProject(data: any) {
-        return this.api.post<Project>('projects', data) 
+        return this._api.post<Project>(this._env.projectsUrl, data) 
         // this.projects.push(data);
     }
     getProjects() : Observable<Project[]> {
         // this.api.get<Project[]>('projects').subscribe({
         //     next: data => this.projects = data,
         // });
-        return this.api.get<Project[]>('projects');
+        return this._api.get<Project[]>(this._env.projectsUrl);
+    }
+    getProject(id: string): Observable<any> {
+        return this._api.get<Project>(`${this._env.projectsUrl}${id}`);
+    }
+    updateProject(data: any, id: string): Observable<any> {
+        return this._api.patch(`${this._env.projectsUrl}${id}`, data)
+    }
+    deleteProject(id: string): Observable<any> {
+        return this._api.delete(`${this._env.projectsUrl}${id}`)
     }
     // getProject(id: number) : Project | null {
     //     `Возвращает объект или null если объект не найден`

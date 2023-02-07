@@ -6,6 +6,10 @@
 @import '~primeng/resources/primeng.min.css';
 .p-toast {opacity: 1} // fix opacity
 
+:root {
+--mdc-icon-button-icon-color: #4577c6;
+}
+
 html,
 body {
     height: 100%;

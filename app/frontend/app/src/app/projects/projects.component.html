@@ -39,9 +39,32 @@
                     <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4 gy-4">
                         <div *ngFor="let project of projects" class="col">
                             <!-- <p *ngFor="let p of project_model.getProjects()">[{{ p.id }}] {{ p.title }} ({{ p.description }})</p> -->
+                                            <!-- [routerLink]="['/crud/update/', product.id]" -->
                             <mat-card class="example-card">
+                                        <div class="top-controls">
+                                            <button 
+                                                *ngIf="isAdmin" 
+                                                mat-icon-button
+                                                matTooltip="Редактировать"
+                                                [routerLink]="['edit', project.id]" 
+                                                routerLinkActive="active"
+                                                >
+                                                <mat-icon>edit</mat-icon>
+                                            </button>
+                                            <button 
+                                                *ngIf="isAdmin" 
+                                                mat-icon-button
+                                                matTooltip="Удалить"
+                                                [routerLink]="['delete', project.id]" 
+                                                routerLinkActive="active"
+                                                >
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
                                 <mat-card-header>
-                                    <mat-card-subtitle>Сайт визитка</mat-card-subtitle>
+                                    <mat-card-subtitle>Сайт визитка
+                                        <!-- <button type="button" (click)="crudService.delete(product.id)">Remove</button> -->
+                                    </mat-card-subtitle>
                                     <mat-card-title>{{ project.title }}</mat-card-title>
                                 </mat-card-header>
                                 <img mat-card-image src="/assets/images/w-2.png" />
@@ -50,8 +73,15 @@
                                     <mat-divider></mat-divider>
                                 </mat-card-content>
                                 <mat-card-actions>
-                                    <button mat-button>LIKE</button>
-                                    <button mat-button>SHARE</button>
+                                    <!-- <button mat-button>LIKE</button> -->
+                                    <!-- <button mat-button>SHARE</button> -->
+                                    <button 
+                                        mat-button
+                                        [routerLink]="['detail', project.id]" 
+                                        routerLinkActive="active"
+                                        >
+                                        ПОДРОБНЕЕ
+                                    </button>
                                 </mat-card-actions>
                                 <mat-card-footer>
                                     <!-- <mat-progress-bar mode="indeterminate"></mat-progress-bar> -->
@@ -75,12 +105,6 @@
         </mat-tab>
         <!-- <mat-tab label="Third">Content 3</mat-tab> -->
     </mat-tab-group>
-<button type="button" 
-            (click)="showSuccess()"
-            label="Success"
-            class="p-button-success">ы
-    </button>
-
     
 
 </div>

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { ProjectService } from '../models/project/project.service';
 
 @Component({
@@ -10,12 +11,13 @@ import { ProjectService } from '../models/project/project.service';
 export class CreateComponent {
 
   projectForm: FormGroup;
-  project_form_submitted = false;
+  submitted = false;
   errors : any = []
 
   constructor(
     public project_model: ProjectService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private _messageService: MessageService
   ){
     this.projectForm = this.fb.group({
       title: [''],
@@ -23,28 +25,25 @@ export class CreateComponent {
     });
   }
 
-  submitProjectForm(){
-    // let body = {
-    //     title: value.title,
-    //     description: value.description
-    // }
+  submit(){
     this.project_model.createProject(this.projectForm.value).subscribe({
       next: response => {
             console.log('POST RESPONSE: ', response);
+            this._messageService.add({
+                severity: 'success',
+                summary: 'Успешно!',
+                detail: 'Проект добавлен',
+                life: 5000
+            });
         },
       error: err => this.errors.push(err)
     })
 
-    this.project_form_submitted = true;
+    this.submitted = true;
   }
 
   newProject(): void {
-    this.project_form_submitted = false;
-    // this.project_form = {
-    //   title: '',
-    //   description: '',
-    //   // published: false
-    // };
+    this.submitted = false;
     this.projectForm.reset();
   }
 

@@ -31,6 +31,21 @@
                 margin-left: 0;
                 margin-right: 0;
             }
+            mat-card {
+                .top-controls {
+                    position: absolute;
+                    right: 0;
+                    button {
+                        transform: scale(.75);
+                        border-radius: 0 !important;
+                        margin-left: -10px;
+
+                        .mat-mdc-button-persistent-ripple {
+                            border-radius: 0 !important;
+                        }
+                    }
+                }
+            }
         }
     }
 }

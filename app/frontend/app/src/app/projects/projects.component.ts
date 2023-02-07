@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { catchError, finalize } from 'rxjs';
 import { User } from '../shared/models/user.model';
@@ -37,8 +38,9 @@ export class ProjectsComponent implements OnInit {
 
   constructor(
     private _authService: AuthService,
-    public project_model: ProjectService, 
+    private project_model: ProjectService, 
     private messageService: MessageService,
+    private router: Router
   ){
     this._authService.currentUser.subscribe(x => this.currentUser = x)
     this._authService.isAdmin.subscribe(x => this.isAdmin = x)
@@ -63,20 +65,12 @@ export class ProjectsComponent implements OnInit {
       });
   }
 
-  showSuccess() {
-        this.messageService.add({
-            severity: 'success',
-            summary: 'Отлично!',
-            detail: 'Все заебись, просто охуенчик',
-            life: 100000
-        });
-    }
-
   getProjects(){
     // console.log(this.project_model.getProjects())
     // this.completedProjectsTabLoaded = true;
     return this.projects
   }
+
   // saveProject(): void {
   //   // const data = {
   //   //   title: this.project_form.title,

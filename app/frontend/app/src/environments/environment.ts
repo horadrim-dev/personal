@@ -3,4 +3,5 @@ export const environment = {
   urlAddress: 'http://localhost:8001/api',
   jwtLogin: 'token/',
   jwtRefresh: 'token/refresh/',
+  projectsUrl: 'projects'
 };

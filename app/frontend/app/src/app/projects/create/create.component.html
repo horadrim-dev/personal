@@ -1,33 +1,10 @@
 <div>
     <div class="submit-form">
-        <div *ngIf="!project_form_submitted ">
-            <!-- <div class="form-group">
-                <label for="title">Title</label>
-                <input
-                type="text"
-                class="form-control"
-                id="title"
-                required
-                [(ngModel)]="project_form.title"
-                name="title"
-                />
-            </div>
+        <div *ngIf="!submitted ">
 
-            <div class="form-group">
-                <label for="description">Description</label>
-                <input
-                class="form-control"
-                id="description"
-                required
-                [(ngModel)]="project_form.description"
-                name="description"
-                />
-            </div>
+            <h1>Новый проект</h1>
 
-            <button (click)="saveProject()" class="btn btn-success">Submit</button> -->
-
-            <h1>Create Product</h1>
-            <form [formGroup]="projectForm" (ngSubmit)="submitProjectForm()" novalidate>
+            <form [formGroup]="projectForm" (ngSubmit)="submit()" novalidate>
                 <div class="form-group">
                     <label>Name</label>
                     <input type="text" formControlName="title" class="form-control" maxlength="20">
@@ -38,13 +15,15 @@
                 </div>
                 <button type="submit">Submit</button>
             </form>
-        </div>
 
-        <div *ngIf="project_form_submitted && !errors">
-            <h4>Project was submitted successfully!</h4>
-            <button class="btn btn-success" (click)="newProject()">Add</button>
         </div>
-        <div *ngIf="errors">
+        {{errors}}
+        <div *ngIf="submitted && !errors.length">
+            <h4>Project was submitted successfully!</h4>
+            <button class="btn btn-success" (click)="newProject()">Создать новый проект</button>
+            <button class="btn" routerLink="projects">Вернуться к списку</button>
+        </div>
+        <div *ngIf="errors.length">
             <span>{{ errors }}</span>
         </div>
     </div>

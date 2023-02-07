@@ -18,11 +18,15 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { UpdateComponent } from './update/update.component';
+import { DetailComponent } from './detail/detail.component';
 
 @NgModule({
   declarations: [
     ProjectsComponent,
-    CreateComponent
+    CreateComponent,
+    UpdateComponent,
+    DetailComponent
   ],
   imports: [
     CommonModule,
