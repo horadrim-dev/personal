@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { EnvironmentService } from "./environment.service";
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Router } from "@angular/router";
 
 export interface ApiRequestOptions {
   headers: Record<string, any>;
@@ -48,7 +49,8 @@ export function getApiRequestOptions(options?: Partial<ApiRequestOptions>): Part
 export class ApiService {
     constructor(
         private readonly httpClient: HttpClient, 
-        private env: EnvironmentService
+        private env: EnvironmentService,
+        private router: Router
     ){
         console.log('ENV : ', env.urlAddress);
     }
@@ -58,7 +60,7 @@ export class ApiService {
     }
 
     get<T = void>(url: string, options?: Partial<ApiRequestOptions>): Observable<T> {
-        console.log('options: ', getApiRequestOptions(options))
+        // console.log('options: ', getApiRequestOptions(options))
         return this.httpClient.get<T>(
                 this.makeUrl(url), 
                 getApiRequestOptions(options)
@@ -99,19 +101,70 @@ export class ApiService {
                 .pipe(catchError(this.errorHandler));
     }
 
-    errorHandler(error: any) {
-        let errorMessage = '';
-        if(error.error instanceof ErrorEvent) {
-            // Get client-side error
-            errorMessage = error.error.message;
-        } else {
-            // Get server-side error
-            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    errorHandler = (error: any) => {
+        let handled: boolean = false;
+        console.error('[API] catched error: ', error);
+        if (error instanceof HttpErrorResponse) {
+            if (error.error instanceof ErrorEvent) {
+                console.error("[API] Error Event: ");
+            } else {
+                // console.log(`[API] error status : ${error.status} ${error.statusText}`);
+                switch (error.status) {
+                    case 401:      //login
+                        this.router.navigateByUrl("/login");
+                        console.log(`[API] redirect to login`);
+                        handled = true;
+                        break;
+                    case 403:     //forbidden
+                        this.router.navigateByUrl("/login");
+                        console.log(`[API] redirect to login`);
+                        handled = true;
+                        break;
+                    // 404 throw further
+                    // case 404:     
+                    //     handled = true;
+                    //     console.log(`[API] redirect to 404`);
+                    //     this.router.navigate(["/404"]);
+                    //     break;
+                }
+            }
         }
-        console.log(errorMessage);
-        /////////
-        // TODO: ошибка должна отсылаться разработчику
-        /////////
-        return throwError(() => new Error(errorMessage));
+        else {
+          console.log("[API] Other Errors");
+        }
+ 
+        if (handled) {
+            console.log('[API] return back ');
+            return of(error);
+        } else {
+            console.log('[API] throw error back to to the subscriber', error);
+            return throwError(() => error);
+        }
+        // console.log('ERROR STATUS (): ', error.status)
+        // let errorMessage = '';
+        // if(error.error instanceof ErrorEvent) {
+        //     // Get client-side error
+        //     errorMessage = error.error.message;
+        // } else {
+        //     // Get server-side error
+        //     errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        //     switch (error.status) {
+        //         // case 401:      //login
+        //         //     this.router.navigateByUrl("/login");
+        //         //     break;
+        //         // case 403:     //forbidden
+        //         //     this.router.navigateByUrl("/unauthorized");
+        //         //     break;
+        //         case 404:     //forbidden
+        //             console.log('404')
+        //             this.router.navigate(["/404"]);
+        //             break;
+        //     }
+        // }
+        // console.log(errorMessage);
+        // /////////
+        // // TODO: ошибка должна отсылаться разработчику
+        // /////////
+        // return throwError(() => new Error(errorMessage));
     }
 }

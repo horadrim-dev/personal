@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
+import { PagenotfoundComponent } from './shared/components/pagenotfound/pagenotfound.component';
 // import { BlogComponent } from './blog/blog.component';
 
 const routes: Routes = [
@@ -42,6 +43,8 @@ const routes: Routes = [
     loadChildren: () => import('./faq/faq.module').then(m => m.FaqModule),
     // data: { breadcrumb: 'FAQ' }
   },
+  { path: '404', pathMatch: 'full', component: PagenotfoundComponent },
+  { path: '**', redirectTo: '/404'}
 ];
 
 @NgModule({

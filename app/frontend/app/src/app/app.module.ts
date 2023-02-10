@@ -25,6 +25,7 @@ import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
+import { PagenotfoundComponent } from './shared/components/pagenotfound/pagenotfound.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { JwtInterceptor } from './shared/interceptors/jwt.interceptor';
     BreadcrumbsComponent,
     LoginComponent,
     ProfileComponent,
+    PagenotfoundComponent,
     // BlogComponent,
   ],
   imports: [

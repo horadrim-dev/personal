@@ -1,8 +1,9 @@
 import { Project } from "./project.model";
 import { Injectable } from "@angular/core";
 import { ApiService } from "src/app/shared/services/api.service";
-import { Observable } from "rxjs";
+import { catchError, Observable, throwError } from "rxjs";
 import { EnvironmentService } from "src/app/shared/services/environment.service";
+import { Router } from "@angular/router";
 
 @Injectable()
 export class ProjectService {
@@ -13,6 +14,7 @@ export class ProjectService {
     constructor(
         // private datasource: ProjectsService
         // private repo: ProjectRepository
+        private router: Router,
         private _api: ApiService, private _env: EnvironmentService
     ){
         // this.datasource = new ProjectsService;
@@ -33,13 +35,21 @@ export class ProjectService {
         return this._api.get<Project[]>(this._env.projectsUrl);
     }
     getProject(id: string): Observable<any> {
-        return this._api.get<Project>(`${this._env.projectsUrl}${id}`);
+        return this._api.get<Project>(`${this._env.projectsUrl}/${id}`)
+            // .pipe(catchError((error) => {
+            //     console.log('[projectService] error: ', error.error)
+            //     if (error.status === 404) {
+            //         console.log('[projectService] catch 404')
+            //         this.router.navigate(['/404']);
+            //     }
+            //     return throwError(() => new Error(error));
+            // }));
     }
-    updateProject(data: any, id: string): Observable<any> {
-        return this._api.patch(`${this._env.projectsUrl}${id}`, data)
+    updateProject(id: string, data: any): Observable<any> {
+        return this._api.patch(`${this._env.projectsUrl}/${id}`, data)
     }
     deleteProject(id: string): Observable<any> {
-        return this._api.delete(`${this._env.projectsUrl}${id}`)
+        return this._api.delete(`${this._env.projectsUrl}/${id}`)
     }
     // getProject(id: number) : Project | null {
     //     `Возвращает объект или null если объект не найден`

@@ -47,7 +47,7 @@ export class AuthService {
                       currentUser.refreshToken = response.refresh
                       localStorage.setItem('currentUser', JSON.stringify(currentUser));
                       this.currentUserSubject.next(currentUser);
-                      console.log(JSON.stringify(currentUser));
+                      console.log('[AUTH] try to login as: ', JSON.stringify(currentUser));
                       // return currentUser;
                     } 
                     return response
@@ -69,7 +69,7 @@ export class AuthService {
                 map(response => {
                     // login successful if there's a jwt token in the response
                     // console.log('refresh')
-                    console.log(response)
+                    // console.log(response)
                     let currentUser: User;
                     if (response.access) {
                         // store user details and jwt token in local storage to keep user logged in between page refreshes

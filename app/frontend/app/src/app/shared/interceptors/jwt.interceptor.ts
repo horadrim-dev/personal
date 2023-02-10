@@ -20,16 +20,16 @@ export class JwtInterceptor implements HttpInterceptor {
     // intercept only if user is logged in
     if (!this._authService.isLoggedIn) return next.handle(request);
 
-    console.log('JWT INTERCEPTOR START');
+    // console.log('[JWT] START');
     // add auth header with jwt if user is logged in and request is to api url
     const currentUser = this._authService.currentUserValue;
     const isLoggedIn = currentUser && currentUser.token;
     const isApiUrl = request.url.startsWith(this._envService.urlAddress);
-    console.log('1. isLoggedIn: ', isLoggedIn);
-    console.log('2. isApiUrl: ', isApiUrl);
-    console.log('3. currentUser: ', currentUser);
-    console.log('4. request: ', request);
-    console.log('5. request.url: ', request.url);
+    // console.log('1. isLoggedIn: ', isLoggedIn);
+    // console.log('2. isApiUrl: ', isApiUrl);
+    // console.log('3. currentUser: ', currentUser);
+    // console.log('4. request: ', request);
+    // console.log('5. request.url: ', request.url);
     // console.log(request)
     if (isLoggedIn 
         && isApiUrl 
@@ -37,6 +37,7 @@ export class JwtInterceptor implements HttpInterceptor {
         && request.url != `${this._envService.urlAddress}/${this._envService.jwtRefresh}` 
         && request.url != `${this._envService.urlAddress}/${this._envService.jwtLogin}` 
         ) {
+        console.log('[JWT] added token to request: ', request.method, request.url)
         request = request.clone({
             setHeaders: {
                 Authorization: `Bearer ${currentUser.token}`
@@ -46,26 +47,27 @@ export class JwtInterceptor implements HttpInterceptor {
     
     return next.handle(request).pipe(
         catchError(error => {
-          console.log('6. error status: ', error.status)
-          console.log('6. error message: ', error.message)
+          // console.log('6. error status: ', error.status)
+          // console.log('6. error message: ', error.message)
+          console.log('[JWT] catched error: ', error)
           if ( error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)
             && request.url === `${this._envService.urlAddress}/${this._envService.jwtRefresh}`) {
             // We do another check to see if refresh token failed
             // In this case we want to logout user and to redirect it to login page  
             // console.log('on your way out')            
-            console.log('7. throw 1: ');
+            console.log('[JWT] throw 1: zapros na obnovlenie tokena ne avtorizovan');
             this._authService.logout();              
             return throwError(() => new Error(error.message));
-          }
-          else if (error instanceof HttpErrorResponse && error.status === 401) {
-            console.log('7. throw 2: ');
+            // return throwError(() => new Error(error)); //error.message
+          } else if (error instanceof HttpErrorResponse && error.status === 401) {
+            console.log('[JWT] throw 2: token too old, start refreshing');
             return this.handle401Error(request, next);
           } else {
-            console.log('7. throw 3: ');
-            return throwError(() => new Error(error.message));
+            console.log('[JWT] throw 3: "not my problem" error, throw further: ');
+            return throwError(() => error); //error.message
           }
         })
-      ) as Observable<HttpEvent<any>>
+      )// as Observable<HttpEvent<any>>
 
     // return next.handle(request);
   }
@@ -80,13 +82,14 @@ export class JwtInterceptor implements HttpInterceptor {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
 
-      // console.log(': ', request.url);
+      console.log('[JWT] start tokens refreshing');
 
       return this._authService.refreshToken().pipe(
         switchMap((token: any) => {
           this.isRefreshing = false;
-          console.log('8. NEW TOKEN: ', token)
-          console.log('8. NEW TOKEN (refresh): ', token.refresh)
+          // console.log('8. NEW TOKEN: ', token)
+          // console.log('8. NEW TOKEN (refresh): ', token.refresh)
+          console.log('[JWT] tokens are refreshed');
           this.refreshTokenSubject.next(token.refresh);
           return next.handle(this.addToken(request, token.refresh));
         }));
@@ -103,12 +106,14 @@ export class JwtInterceptor implements HttpInterceptor {
 
   private addToken(request: HttpRequest<any>, token: string) {
     const currentUser = this._authService.currentUserValue;
-    if (currentUser)
+    if (currentUser){
+      console.log('[JWT] fresh token added to request', request.url)
       return request.clone({
         setHeaders: {
           'Authorization': `Bearer  ${currentUser.token}`
         }
       });
+    }
     else return request
   }
 }

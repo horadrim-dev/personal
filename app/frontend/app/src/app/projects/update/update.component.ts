@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { ProjectService } from '../models/project/project.service';
@@ -11,10 +11,11 @@ import { ProjectService } from '../models/project/project.service';
 })
 export class UpdateComponent implements OnInit {
 
-  projectForm: FormGroup;
+  loading = true;
+  form: FormGroup;
   submitted = false;
-  errors : any = []
-  // projectId: 
+  errors : any = [];
+  projectId: number;
 
   constructor(
     public project_model: ProjectService,
@@ -23,18 +24,26 @@ export class UpdateComponent implements OnInit {
     private route: ActivatedRoute,
     private router:Router,
   ){
-    this.projectForm = this.fb.group({
-      title: [''],
-      description: [''],
+    this.form = this.fb.group({
+      title: ['', Validators.required],
+      description: ['', Validators.required],
     });
+    this.projectId = this.route.snapshot.params['id'];
+    // console.log(this.projectId.toString())
   }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((param) => {
-      var id = Number(param.get('id'));
-      this.getProject(id);
-    });    
+    this.getProject(this.projectId);
+
+    // this.route.paramMap.subscribe((param) => {
+    //   this.projectId = Number(param.get('id'));
+    //   // console.log(this.projectId);
+    //   this.getProject(this.projectId);
+    // });    
   }
+
+  // convenience getter for easy access to form fields
+  get f() { return this.form.controls; }
   // submit(){
   //   this.project_model.createProject(this.projectForm.value).subscribe({
   //     next: response => {
@@ -58,21 +67,60 @@ export class UpdateComponent implements OnInit {
   // }
 
   getProject(id: number) {
-    this.project_model.getProject(id.toString()).subscribe((data) => {
-      this.projectForm = data;
+    this.project_model.getProject(id.toString()).subscribe({
+      next: (data) => {
+        // this.projectForm = data;
+        this.form.patchValue(data)
+        this.loading = false;
+        // console.log(data)
+      // console.log(this.form)
+      },
+      error: (err) => {
+        console.log('[updateProject] catched error: ', err)
+        this.router.navigate(['/404'])
+        console.log('[updateProject] redirecting to 404')
+      }
     });
   }
- 
-  // updateProject() {
-  //   this.project_model.updateProject(this.fruitForm)
-  //   .subscribe({
-  //     next:(data) => {
-  //       this.router.navigate(["/fruits/home"]);
-  //     },
-  //     error:(err) => {
-  //       console.log(err);
-  //     }
-  //   })
-  // }
+  onSubmit() {
+    this.submitted = true;
+
+    // reset alerts on submit
+    // this.alertService.clear();
+
+    // stop here if form is invalid
+    if (this.form.invalid) {
+        return;
+    }
+
+    this.loading = true;
+    // if (this.isAddMode) {
+    //     this.createUser();
+    // } else {
+    this.updateProject();
+    // }
+  }
+
+  updateProject() {
+    this.project_model.updateProject(this.projectId.toString(), this.form.value)
+    .subscribe({
+      next:(data) => {
+        // this.router.navigate(["/fruits/home"]);
+        // this.alertService.success('User added', { keepAfterRouteChange: true });
+        this._messageService.add({
+            severity: 'success',
+            summary: 'Успешно!',
+            detail: `Проект "${this.f['title'].value}" обновлен.`,
+            life: 5000
+        });
+        console.log('Project updated')
+        this.router.navigate(['../../'], { relativeTo: this.route });
+      },
+      error:(err) => {
+        console.log(err);
+      }
+    })
+    .add(() => this.loading = false);
+  }
 
 }
