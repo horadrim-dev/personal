@@ -8,7 +8,8 @@ import { User } from '../shared/models/user.model';
 import { AuthService } from '../shared/services/auth.service';
 import { Project } from './models/project/project.model';
 import { ProjectService } from './models/project/project.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteComponent } from './delete/delete.component';
 // import { RepositoryService } from '../shared/services/repository.service';
 // import { ProjectsService } from './models/project/projects.service';
 // import { DataSource } from './models/project/projects.service';
@@ -40,7 +41,8 @@ export class ProjectsComponent implements OnInit {
     private _authService: AuthService,
     private project_model: ProjectService, 
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ){
     this._authService.currentUser.subscribe(x => this.currentUser = x)
     this._authService.isAdmin.subscribe(x => this.isAdmin = x)
@@ -70,7 +72,34 @@ export class ProjectsComponent implements OnInit {
     // this.completedProjectsTabLoaded = true;
     return this.projects
   }
+  openDeleteDialog(project : Project) {
+    const dialogRef = this.dialog.open(DeleteComponent);
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.project_model.deleteProject(project.id.toString())
+          .subscribe({
+            next: (data) => {
+              // удаляем удаленный объект из массива
+              this.projects = this.projects.filter(item => item.id !== project.id)
+              // сообщение об успехе
+              this.messageService.add({
+                severity: 'success', life: 5000, summary: "Успешно!",
+                detail: `Проект "${project.title}" удален .`
+              })
+            },
+            complete: () => {},
+            error: (err) => {
+              // сообщение об ошибке
+              this.messageService.add({
+                severity: 'error', life: 10000, summary: "Ошибка при удалении",
+                detail: `Не удалось удалить проект "${project.title}" .`
+              })
+            }
+          })
+      }
+    });
+  }
   // saveProject(): void {
   //   // const data = {
   //   //   title: this.project_form.title,

@@ -20,13 +20,16 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UpdateComponent } from './update/update.component';
 import { DetailComponent } from './detail/detail.component';
+import { DeleteComponent } from './delete/delete.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     ProjectsComponent,
     CreateComponent,
     UpdateComponent,
-    DetailComponent
+    DetailComponent,
+    DeleteComponent
   ],
   imports: [
     CommonModule,
@@ -38,6 +41,7 @@ import { DetailComponent } from './detail/detail.component';
     MatTabsModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatDialogModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

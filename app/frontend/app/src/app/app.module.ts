@@ -20,6 +20,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+// import { MatDialogModule } from '@angular/material/dialog'; 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -48,6 +49,7 @@ import { PagenotfoundComponent } from './shared/components/pagenotfound/pagenotf
     MatListModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    // MatDialogModule,
     MatMenuModule,
     ToastModule,
     // MessagesModule,

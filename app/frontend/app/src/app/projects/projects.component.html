@@ -40,7 +40,7 @@
                         <div *ngFor="let project of projects" class="col">
                             <!-- <p *ngFor="let p of project_model.getProjects()">[{{ p.id }}] {{ p.title }} ({{ p.description }})</p> -->
                                             <!-- [routerLink]="['/crud/update/', product.id]" -->
-                            <mat-card class="example-card">
+                            <mat-card class="example-card" disabled>
                                         <div class="top-controls">
                                             <button 
                                                 *ngIf="isAdmin" 
@@ -55,10 +55,11 @@
                                                 *ngIf="isAdmin" 
                                                 mat-icon-button
                                                 matTooltip="Удалить"
-                                                [routerLink]="['delete', project.id]" 
-                                                routerLinkActive="active"
+                                                (click)="openDeleteDialog(project)"
                                                 >
                                                 <mat-icon>delete</mat-icon>
+                                                <!-- [routerLink]="['delete', project.id]" 
+                                                routerLinkActive="active" -->
                                             </button>
                                         </div>
                                 <mat-card-header>
